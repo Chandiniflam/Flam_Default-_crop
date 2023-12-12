@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor
 import aiohttp
 import uvicorn
 from fastapi.openapi.utils import get_openapi
-from Generate_best_crop import best_crop
+from Generate_best_crop import best_crop,correct_orientation
 import numpy as np
 import logging
 import zipfile
@@ -28,6 +28,7 @@ async def fetch_image(url):
                 image_bytes = await response.read()
                 image_bytes = bytearray(image_bytes)
                 image = Image.open(BytesIO(image_bytes))
+                image = correct_orientation(image)
                 return image
             else:
                 return None
